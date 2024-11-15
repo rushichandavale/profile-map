@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+mapboxgl.accessToken = 'pk.eyJ1IjoicnVzaGljaGFuZGF2YWxlIiwiYSI6ImNtM2ozbmpobDA4ZnYyanIyMWFjcnlidTcifQ.WU429gj7K4WW0jlqW8Mbuw';
 const MapComponent = ({ location }) => {
   const mapContainer = useRef(null);
 

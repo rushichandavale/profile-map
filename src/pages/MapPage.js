@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl';
 import { useParams } from 'react-router-dom';
 import { profilesData } from '../data/profiles'; 
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
+mapboxgl.accessToken = 'pk.eyJ1IjoicnVzaGljaGFuZGF2YWxlIiwiYSI6ImNtM2ozbmpobDA4ZnYyanIyMWFjcnlidTcifQ.WU429gj7K4WW0jlqW8Mbuw';
 
 const MapPage = () => {
   const { id } = useParams(); 
