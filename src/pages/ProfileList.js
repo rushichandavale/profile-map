@@ -3,16 +3,16 @@ import ProfileCard from '../components/ProfileCard';
 import { profilesData } from '../data/profiles';
 
 const ProfileList = () => {
-  const [searchTerm, setSearchTerm] = useState(''); // State for search term
-  const [filteredProfiles, setFilteredProfiles] = useState(profilesData); // State for filtered profiles
-  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [searchTerm, setSearchTerm] = useState(''); 
+  const [filteredProfiles, setFilteredProfiles] = useState(profilesData); 
+  const [loading, setLoading] = useState(false);
 
   // Handle search input change
   const handleSearchChange = (e) => {
-    const term = e.target.value.toLowerCase(); // Convert to lowercase for case-insensitive search
+    const term = e.target.value.toLowerCase(); 
     setSearchTerm(term);
 
-    // Simulate filtering delay
+    
     setLoading(true);
     setTimeout(() => {
       const filtered = profilesData.filter(profile =>
@@ -21,16 +21,16 @@ const ProfileList = () => {
       );
       setFilteredProfiles(filtered);
       setLoading(false);
-    }, 500); // 500ms delay to simulate loading
+    }, 500); 
   };
 
   useEffect(() => {
-    // Simulate initial loading when the component mounts
+  
     setLoading(true);
     setTimeout(() => {
       setFilteredProfiles(profilesData);
       setLoading(false);
-    }, 1000); // 1s delay to simulate initial data loading
+    }, 1000); 
   }, []);
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
-import ProfileCard from '../components/ProfileCard'; // Import ProfileCard component
-import { profilesData } from '../data/profiles'; // Assuming profilesData is your profile data
+import { Link } from 'react-router-dom'; 
+import ProfileCard from '../components/ProfileCard'; 
+import { profilesData } from '../data/profiles';
 
 const Home = () => {
   return (
@@ -18,8 +18,8 @@ const Home = () => {
       </div>
 
       {/* Content Section */}
-      <div className="pt-20"> {/* Added padding-top to avoid navbar overlap */}
-        {/* Display Profiles */}
+      <div className="pt-20"> 
+        
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
           {profilesData.map((profile) => (
             <div

@@ -1,4 +1,3 @@
-// pages/AdminPanelPage.js
 import React from 'react';
 import AdminPanel from '../components/AdminPanel';
 import { profilesData } from '../data/profiles';

@@ -8,19 +8,22 @@ const AdminPanel = ({ profiles }) => {
     longitude: '',
   });
   const [profileList, setProfileList] = useState(profiles);
-  const [editingProfile, setEditingProfile] = useState(null); // Holds the profile being edited
+  const [editingProfile, setEditingProfile] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setNewProfile((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setNewProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const addProfile = () => {
-    const newProfileObj = {
-      id: profileList.length + 1,
+  const resetForm = () => {
+    setNewProfile({ name: '', description: '', latitude: '', longitude: '' });
+    setEditingProfile(null);
+  };
+
+  const addOrEditProfile = () => {
+    const updatedProfile = {
+      ...editingProfile,
+      id: editingProfile ? editingProfile.id : profileList.length + 1,
       name: newProfile.name,
       description: newProfile.description,
       location: {
@@ -28,17 +31,20 @@ const AdminPanel = ({ profiles }) => {
         longitude: parseFloat(newProfile.longitude),
       },
     };
-    setProfileList((prev) => [...prev, newProfileObj]);
-    setNewProfile({
-      name: '',
-      description: '',
-      latitude: '',
-      longitude: '',
-    });
+
+    setProfileList((prev) =>
+      editingProfile
+        ? prev.map((profile) =>
+            profile.id === editingProfile.id ? updatedProfile : profile
+          )
+        : [...prev, updatedProfile]
+    );
+
+    resetForm();
   };
 
   const deleteProfile = (id) => {
-    setProfileList(profileList.filter((profile) => profile.id !== id));
+    setProfileList((prev) => prev.filter((profile) => profile.id !== id));
   };
 
   const startEditing = (profile) => {
@@ -51,118 +57,89 @@ const AdminPanel = ({ profiles }) => {
     });
   };
 
-  const saveEditedProfile = () => {
-    setProfileList((prev) =>
-      prev.map((profile) =>
-        profile.id === editingProfile.id
-          ? {
-              ...profile,
-              name: newProfile.name,
-              description: newProfile.description,
-              location: {
-                latitude: parseFloat(newProfile.latitude),
-                longitude: parseFloat(newProfile.longitude),
-              },
-            }
-          : profile
-      )
-    );
-    setEditingProfile(null);
-    setNewProfile({
-      name: '',
-      description: '',
-      latitude: '',
-      longitude: '',
-    });
-  };
-
   return (
-    <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
-      {/* Add or Edit Profile Section */}
+    <div className="bg-gray-100 p-4 sm:p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+      {/* Form Section */}
       <div className="mb-6">
-        <h3 className="text-2xl font-semibold mb-4">
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4">
           {editingProfile ? 'Edit Profile' : 'Add New Profile'}
         </h3>
-        <input
-          type="text"
-          name="name"
-          value={newProfile.name}
-          onChange={handleInputChange}
-          placeholder="Name"
-          className="border-2 p-3 rounded-md mb-3 w-full focus:ring-2 focus:ring-indigo-500"
-        />
-        <input
-          type="text"
-          name="description"
-          value={newProfile.description}
-          onChange={handleInputChange}
-          placeholder="Description"
-          className="border-2 p-3 rounded-md mb-3 w-full focus:ring-2 focus:ring-indigo-500"
-        />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-3">
           <input
-            type="number"
-            name="latitude"
-            value={newProfile.latitude}
+            type="text"
+            name="name"
+            value={newProfile.name}
             onChange={handleInputChange}
-            placeholder="Latitude"
-            className="border-2 p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
+            placeholder="Name"
+            className="border p-2 sm:p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
           />
           <input
-            type="number"
-            name="longitude"
-            value={newProfile.longitude}
+            type="text"
+            name="description"
+            value={newProfile.description}
             onChange={handleInputChange}
-            placeholder="Longitude"
-            className="border-2 p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
+            placeholder="Description"
+            className="border p-2 sm:p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
           />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input
+              type="number"
+              name="latitude"
+              value={newProfile.latitude}
+              onChange={handleInputChange}
+              placeholder="Latitude"
+              className="border p-2 sm:p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
+            />
+            <input
+              type="number"
+              name="longitude"
+              value={newProfile.longitude}
+              onChange={handleInputChange}
+              placeholder="Longitude"
+              className="border p-2 sm:p-3 rounded-md w-full focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
         </div>
         <button
-          onClick={editingProfile ? saveEditedProfile : addProfile}
-          className={`${
-            editingProfile ? 'bg-green-600 hover:bg-green-700' : 'bg-indigo-600 hover:bg-indigo-700'
-          } text-white p-3 rounded-lg mt-4 w-full focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+          onClick={addOrEditProfile}
+          className={`mt-4 w-full py-2 sm:py-3 rounded-lg text-white ${
+            editingProfile
+              ? 'bg-green-600 hover:bg-green-700'
+              : 'bg-indigo-600 hover:bg-indigo-700'
+          } focus:outline-none focus:ring-2 focus:ring-indigo-500`}
         >
           {editingProfile ? 'Save Changes' : 'Add Profile'}
         </button>
         {editingProfile && (
           <button
-            onClick={() => {
-              setEditingProfile(null);
-              setNewProfile({
-                name: '',
-                description: '',
-                latitude: '',
-                longitude: '',
-              });
-            }}
-            className="mt-2 bg-gray-500 hover:bg-gray-600 text-white p-3 rounded-lg w-full"
+            onClick={resetForm}
+            className="mt-2 w-full py-2 sm:py-3 bg-gray-500 hover:bg-gray-600 text-white rounded-lg"
           >
             Cancel
           </button>
         )}
       </div>
 
-      {/* Manage Profiles Section */}
+      {/* Profiles List Section */}
       <div>
-        <h3 className="text-2xl font-semibold mb-4">Manage Profiles</h3>
-        <ul>
+        <h3 className="text-xl sm:text-2xl font-semibold mb-4">Manage Profiles</h3>
+        <ul className="space-y-3">
           {profileList.map((profile) => (
             <li
               key={profile.id}
-              className="flex justify-between items-center p-3 mb-3 bg-white rounded-lg shadow-sm hover:bg-gray-50"
+              className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-3 bg-white rounded-lg shadow-sm hover:bg-gray-50 space-y-2 sm:space-y-0"
             >
               <span className="text-lg font-medium">{profile.name}</span>
               <div className="flex space-x-2">
                 <button
                   onClick={() => startEditing(profile)}
-                  className="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                  className="bg-yellow-500 text-white px-3 py-2 rounded-lg hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => deleteProfile(profile.id)}
-                  className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
+                  className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
                   Delete
                 </button>
@@ -176,4 +153,3 @@ const AdminPanel = ({ profiles }) => {
 };
 
 export default AdminPanel;
-

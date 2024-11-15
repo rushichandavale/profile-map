@@ -1,21 +1,21 @@
 import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { useParams } from 'react-router-dom';
-import { profilesData } from '../data/profiles'; // Import the profiles data
+import { profilesData } from '../data/profiles'; 
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN;
 
 const MapPage = () => {
-  const { id } = useParams(); // Get the profile ID from the URL
-  const profile = profilesData.find((p) => p.id === parseInt(id)); // Find the profile based on ID
+  const { id } = useParams(); 
+  const profile = profilesData.find((p) => p.id === parseInt(id)); 
 
   const mapContainer = useRef(null);
 
   useEffect(() => {
-    // Default coordinates if location is missing or invalid
+    
     const defaultCoordinates = { latitude: 40.7128, longitude: -74.0060 }; // New York
 
-    // Get coordinates from the profile, or use default if not available
+    
     const latitude = profile?.location?.latitude ?? defaultCoordinates.latitude;
     const longitude = profile?.location?.longitude ?? defaultCoordinates.longitude;
 
@@ -35,9 +35,9 @@ const MapPage = () => {
     // Add a marker to the map at the specified location
     new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(map);
 
-    // Clean up the map when the component is unmounted
+    
     return () => map.remove();
-  }, [profile]); // Re-run the effect if the profile changes
+  }, [profile]);
 
   return (
     <div className="container mx-auto p-6">

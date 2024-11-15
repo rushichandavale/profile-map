@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProfileCard = ({ profile }) => {
-  // Basic validation for profile data
   if (!profile || !profile.name || !profile.location) {
     return (
       <div className="bg-red-200 p-4 rounded-lg">
