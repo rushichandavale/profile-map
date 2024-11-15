@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import ProfileList from './pages/ProfileList';
+import AdminPanelPage from './pages/AdminPanelPage';
+import ProfileDetailsPage from './pages/ProfileDetailsPage';
+import MapPage from './pages/MapPage'; // Import the MapPage component
+import ErrorBoundary from './components/ErrorBoundary';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ErrorBoundary>
+      <div className="p-6">
+        <h1 className="text-3xl mb-4 text-center">Profile Location App</h1>
+        <Routes>
+          <Route path="/" element={<Home />} /> {/* Updated Home route */}
+          <Route path="/profiles" element={<ProfileList />} />
+          <Route path="/admin" element={<AdminPanelPage />} />
+          <Route path="/profile/:id" element={<ProfileDetailsPage />} />
+          <Route path="/map/:id" element={<MapPage />} /> {/* Route for map page */}
+        </Routes>
+      </div>
+    </ErrorBoundary>
   );
-}
+};
 
 export default App;
